@@ -12,12 +12,20 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname + '/public/index.html')
 })
 
+app.get('/users', (req, res) => {
+  res.json(Object.values(users))
+})
+
 io.on('connection', (socket) => {
   console.log('connected', socket.id)
 
   socket.on('user-connected', (user) => {
     users[socket.id] = { ...user, id: socket.id }
     console.log('user-connected', users[socket.id])
+  })
+
+  socket.on('disconnect', () => {
+    delete users[socket.id]
   })
 })
 
