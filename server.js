@@ -27,6 +27,7 @@ io.on('connection', (socket) => {
 
   socket.on('disconnect', () => {
     delete users[socket.id]
+    socket.broadcast.emit('users-changed', Object.values(users))
     console.log('disconnected', socket.id)
   })
 })
