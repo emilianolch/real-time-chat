@@ -30,6 +30,13 @@ io.on('connection', (socket) => {
     socket.broadcast.emit('users-changed', Object.values(users))
     console.log('disconnected', socket.id)
   })
+
+  socket.on('new-chat-message', (message) => {
+    socket.to(message.recipientId).emit('new-chat-message', {
+      text: message.text,
+      senderId: socket.id
+    })
+  })
 })
 
 server.listen(5000, () => {
