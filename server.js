@@ -21,11 +21,13 @@ io.on('connection', (socket) => {
 
   socket.on('user-connected', (user) => {
     users[socket.id] = { ...user, id: socket.id }
+    socket.broadcast.emit('users-changed', Object.values(users))
     console.log('user-connected', users[socket.id])
   })
 
   socket.on('disconnect', () => {
     delete users[socket.id]
+    console.log('disconnected', socket.id)
   })
 })
 
